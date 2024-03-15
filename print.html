@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GST Billing Software</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .top-section {
+      text-align: center;
+      background-color: #f9f9f9;
+      color: #222;
+      padding: 20px;
+    }
+
+    .company-name h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .company-name p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .contact-info {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .invoice-section {
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 0 5px 5px #ddd;
+    }
+
+    .client-invoice,
+    .pricing {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    .client-invoice h4 {
+      font-size: 15px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .client-invoice p,
+    .pricing p {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .bank-info {
+      background: #f9f9f9;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .bank-info h1 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .pricing p {
+      text-align: right;
+    }
+
+    .pricing p strong {
+      float: left;
+    }
+
+    .btnBox {
+      display: flex;
+      margin: 30px auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Bootstrap Container -->
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12 invoice-section">
+        <div class="row">
+          <!-- Top Section -->
+          <div class="col-md-12">
+            <div class="top-section">
+              <div class="company-name">
+                <h2>PKS Electronics</h2>
+                <p>2 BIT More, Ranchi, Jharkhand - 835217 India</p>
+              </div>
+              <div class="contact-info">
+                <b>Phone:</b> (91) 999999999 <span>|</span>
+                <b>Email:</b>info@pks-electronics.com <span>|</span>
+                <b>Website:</b> www.pks-electronics.com <span>|</span>
+                <b>GSTIN NO:</b> GH21HJH238DH8HD6
+              </div>
+            </div>
+          </div>
+
+          <!-- 2nd Section -->
+          <div class="col-md-12">
+            <div class="client-invoice mt-2">
+              <div class="row">
+                <div class="col-md-6">
+                  <h4>Client Details</h4>
+                  <p><b>Name: </b> <span id="name"></span></p>
+                  <p><b>Email: </b> <span id="email"></span></p>
+                  <p><b>Phone: </b> <span id="phone"></span></p>
+                  <p><b>Address: </b> <span id="address"></span></p>
+                </div>
+                <div class="col-md-6">
+                  <h4>Invoice Details</h4>
+                  <p><b>Invoice No: </b> <span id="billNumber"></span></p>
+                  <p><b>Date: </b> <span id="billDate"></span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3rd Section -->
+          <div class="col-md-12 mt-2">
+            <div class="items">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Item Description</th>
+                    <th>Item Quantity</th>
+                    <th>Item Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span id="desc"></span></td>
+                    <td><span id="quantity"></span></td>
+                    <td><span id="price"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 4th Section -->
+          <div class="col-md-12">
+            <div class="pricing">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="bank-info">
+                    <h1>Bank Details</h1>
+                    <h6>
+                      PNB BANK, ACCOUNT NO: 49237234789 IFSC: PNB6724762
+                    </h6>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <p>
+                    <strong>Total Price:</strong> ₹<span id="totalPrice">0</span>
+                  </p>
+                  <p>
+                    <strong>GST Percentage:</strong> <span id="gstPer">0</span>%
+                  </p>
+                  <p>
+                    <strong>GST Amount:</strong> ₹<span id="gstAmt">0</span>
+                  </p>
+                  <p>
+                    <strong>Net Amount:</strong> ₹<span id="netAmount">0</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btnBox">
+        <!-- <a href="index.html" class="btn btn-danger btn-lg temp">
+            Edit Invoice
+          </a> -->
+        <button onclick="editBill()" type="button" class="btn btn-danger btn-lg temp">
+          Edit Invoice
+        </button>
+        <button onclick="printBill()" type="button" class="btn btn-primary btn-lg ml-4 temp">
+          Print Invoice
+        </button>
+        <button onclick="resetForm()" type="button" class="btn btn-danger btn-lg ml-4 temp">
+          Home
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    let billNumber = document.getElementById('billNumber'),
+      billDate = document.getElementById('billDate');
+
+    const billInfo = JSON.parse(localStorage.getItem('billInfo'));
+    billNumber.innerText = billInfo.billNumber;
+    billDate.innerText = billInfo.billDate;
+
+    let clientName = document.getElementById('name'),
+      phone = document.getElementById('phone'),
+      email = document.getElementById('email'),
+      address = document.getElementById('address')
+
+    const clientInfo = JSON.parse(localStorage.getItem('clientInfo'));
+    clientName.innerText = clientInfo.name
+    phone.innerText = clientInfo.phone
+    email.innerText = clientInfo.email
+    address.innerText = clientInfo.address
+
+    let desc = document.getElementById('desc'),
+      quantity = document.getElementById('quantity'),
+      price = document.getElementById('price');
+
+    const itemInfo = JSON.parse(localStorage.getItem('itemInfo'));
+    desc.innerText = itemInfo.desc;
+    quantity.innerText = itemInfo.quantity;
+    price.innerText = itemInfo.price;
+
+    let totalPrice = document.getElementById('totalPrice'),
+      gst = document.getElementById('gstPer'),
+      gstAmt = document.getElementById('gstAmt'),
+      netAmount = document.getElementById('netAmount');
+
+    const gstInfo = JSON.parse(localStorage.getItem('gstInfo'));
+
+    let totalPriceCal = itemInfo.quantity * itemInfo.price;
+    totalPrice.innerText = totalPriceCal;
+
+    gst.innerText = gstInfo.gst;
+
+    let gstAmount = (totalPriceCal * gstInfo.gst) / 100;
+    gstAmt.innerText = gstAmount;
+
+    let totalgstAmount = totalPriceCal + gstAmount;
+    netAmount.innerText = totalgstAmount;
+
+    function printBill() {
+      let temp = document.getElementsByClassName("temp")[0],
+        temp2 = document.getElementsByClassName("temp")[1],
+        temp3 = document.getElementsByClassName("temp")[2];
+
+      temp.style.display = "none";
+      temp2.style.display = "none";
+      temp3.style.display = "none";
+      print();
+      temp.style.display = "block";
+      temp2.style.display = "block";
+      temp3.style.display = "block";
+    }
+
+    function editBill() {
+      window.location.href = "index.html";
+    }
+    function resetForm() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+
+</html>
